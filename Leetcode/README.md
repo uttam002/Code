@@ -1,2 +1,2 @@
 # Code
-All programming codes which i write
+Aim to achieve a 100-day coding streak on LeetCode.
