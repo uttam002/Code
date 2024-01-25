@@ -1,0 +1,57 @@
+class Job {
+    int startTime, endTime, profit;
+    Job(int startTime, int endTime, int profit) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.profit = profit;
+    }
+}
+
+public class Solution {
+
+    private static int binarySearch(Job[] jobs, int index) {
+        int low = 0, high = index - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (jobs[mid].endTime <= jobs[index].startTime){
+                if (jobs[mid + 1].endTime <= jobs[index].startTime) low = mid + 1;
+                else return mid;
+            }
+            else high = mid - 1;
+        }
+        return -1;
+    }
+
+    public static int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int n = startTime.length;
+        Job[] jobs = new Job[n];
+        // Combine the three arrays into an array of Job objects
+        for (int i = 0; i < n; i++) jobs[i] = new Job(startTime[i], endTime[i], profit[i]);
+        // Sort jobs based on their end times
+        Arrays.sort(jobs, Comparator.comparingInt(j -> j.endTime));
+
+        // Initialize an array to store the maximum profit at each index
+        int[] dp = new int[n];
+        dp[0] = jobs[0].profit; // Initialize the first element
+
+        for (int i = 1; i < n; i++) {
+            //  Find the latest non-overlapping job and update the maximum profit 
+            // int j = i - 1;
+            // while (j >= 0 && jobs[j].endTime > jobs[i].startTime) {
+            //     j--;
+            // }
+            // TO IMPROVE TIME COMPLEXITY USE BINARY SEARCH 
+
+             int j = binarySearch(jobs, i);
+
+            // Calculate the maximum profit at the current index
+            int includeCurrentJob = (j >= 0) ? dp[j] + jobs[i].profit : jobs[i].profit;
+            int excludeCurrentJob = dp[i - 1];
+            dp[i] = Math.max(includeCurrentJob, excludeCurrentJob);
+        }
+
+        return dp[n - 1];
+    }
+
+}
