@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int maxDifference = 0;
+
+    public int maxAncestorDiff(TreeNode root) {
+         if (root == null) return 0;
+        backtrack(root, root.val, root.val);
+        return maxDifference;
+    }
+    private void backtrack(TreeNode node, int minAncestor, int maxAncestor) {
+        if (node == null) return;
+        // Update the maximum difference if a new maximum is found
+        maxDifference = Math.max(maxDifference, Math.max(Math.abs(node.val - minAncestor), Math.abs(node.val - maxAncestor)));
+        // Update min and max ancestors for the child nodes
+        minAncestor = Math.min(minAncestor, node.val);
+        maxAncestor = Math.max(maxAncestor, node.val);
+        // Recursively traverse the left and right subtrees
+        backtrack(node.left, minAncestor, maxAncestor);
+        backtrack(node.right, minAncestor, maxAncestor);
+    }
+}
