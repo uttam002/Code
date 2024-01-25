@@ -1,0 +1,24 @@
+class Solution {
+      public static int numberOfArithmeticSlices(int[] nums) {
+        int n = nums.length;
+        int total = 0;
+        Map<Integer, Integer>[] dp = new HashMap[n];
+
+        for (int i = 0; i < n; i++) {
+            dp[i] = new HashMap<>();
+            for (int j = 0; j < i; j++) {
+                long diff = (long) nums[i] - nums[j];
+                if (diff <= Integer.MIN_VALUE || diff > Integer.MAX_VALUE)
+                    continue;
+                int d = (int) diff;
+                int countJ = dp[j].getOrDefault(d, 0);
+                int countI = dp[i].getOrDefault(d, 0);
+                total += countJ; // Accumulate the count of arithmetic subsequences ending at index j
+                dp[i].put(d, countI + countJ + 1); // Update the count of arithmetic subsequences ending at index i
+            }
+        }
+
+        return total;
+    }
+
+}
