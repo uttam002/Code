@@ -1,0 +1,18 @@
+class Solution {
+   public int minSteps(String s, String t) {
+        int[] arr = new int[26];
+        int ans = 0;
+        for(char ch : s.toCharArray()){
+            arr[ch - 'a']++;
+            ans++;
+        }
+        for(char ch : t.toCharArray()){
+            if(arr[ch - 'a'] > 0){
+                arr[ch - 'a']--;
+                ans--;
+            }
+        }
+        // System.gc();
+        return ans;
+    }
+}
