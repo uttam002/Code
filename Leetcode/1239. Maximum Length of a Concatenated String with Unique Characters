@@ -1,0 +1,31 @@
+class Solution {
+   public static int maxLength(List<String> arr) {
+        return backtrack(arr, 0, "");
+    }
+
+    private static int backtrack(List<String> arr, int index, String current) {
+        if (!hasUniqueCharacters(current)) {
+            return 0; // If the current subsequence has duplicate characters, return 0
+        }
+
+        int maxLength = current.length();
+
+        for (int i = index; i < arr.size(); i++) {
+            maxLength = Math.max(maxLength, backtrack(arr, i + 1, current + arr.get(i)));
+        }
+
+        return maxLength;
+    }
+
+    private static boolean hasUniqueCharacters(String s) {
+        Set<Character> uniqueChars = new HashSet<>();
+
+        for (char c : s.toCharArray()) {
+            if (!uniqueChars.add(c)) {
+                return false; // Character already encountered, not unique
+            }
+        }
+
+        return true;
+    }
+}
