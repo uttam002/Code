@@ -1,0 +1,30 @@
+class Solution {
+    public static int minDifficulty(int[] jobDifficulty, int d) {
+        int n = jobDifficulty.length;
+        if (n < d)return -1; // Cannot find a schedule for the given jobs
+        return minDifficultyHelper(jobDifficulty, 0, d, new Integer[n][d + 1]);
+    }
+
+    private static int minDifficultyHelper(int[] jobDifficulty, int start, int daysLeft, Integer[][] memo) {
+        int n = jobDifficulty.length;
+        if (daysLeft == 1) {
+            int maxDifficulty = Integer.MIN_VALUE;
+            for (int i = start; i < n; i++) maxDifficulty = Math.max(maxDifficulty, jobDifficulty[i]);
+            return maxDifficulty;
+        }
+
+        if (memo[start][daysLeft] != null) return memo[start][daysLeft];
+
+        int minDifficulty = Integer.MAX_VALUE;
+        int maxOnCurrentDay = Integer.MIN_VALUE;
+
+        for (int i = start; i < n - daysLeft + 1; i++) {
+            maxOnCurrentDay = Math.max(maxOnCurrentDay, jobDifficulty[i]);
+            int remainingDifficulty = minDifficultyHelper(jobDifficulty, i + 1, daysLeft - 1, memo);
+            if (remainingDifficulty != -1) minDifficulty = Math.min(minDifficulty, maxOnCurrentDay + remainingDifficulty);
+        }
+
+        memo[start][daysLeft] = (minDifficulty == Integer.MAX_VALUE) ? -1 : minDifficulty;
+        return memo[start][daysLeft];
+    }
+}
