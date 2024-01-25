@@ -1,0 +1,32 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* findErrorNums(int* nums, int numsSize, int* returnSize) {
+    int* x = (int*)malloc((numsSize + 1) * sizeof(int));
+    int* result = (int*)malloc(2 * sizeof(int));
+
+    *returnSize = 2;
+
+    // Initialize the count array x with zeros
+    for (int i = 0; i <= numsSize; i++) {
+        x[i] = 0;
+    }
+
+    // Count occurrences of each number in nums
+    for (int i = 0; i < numsSize; i++) {
+        x[nums[i]]++;
+    }
+
+    // Find the duplicate and missing numbers
+    for (int j = 1; j <= numsSize; j++) {
+        if (x[j] == 2) {
+            result[0] = j;  // Duplicate number
+        } else if (x[j] == 0) {
+            result[1] = j;  // Missing number
+        }
+    }
+
+    free(x);  // Free the allocated memory for count array
+    return result;
+
+}
