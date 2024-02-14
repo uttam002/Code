@@ -1,81 +1,42 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <math.h>
+import java.util.Arrays;
 
-#define MAX_OPERATIONS 100
+public class GuessTheNumber {
 
-// Function to apply operations and find the original number
-long long apply_operations(int final_number, char operations[MAX_OPERATIONS][10], int num_operations) {
-    long long candidate = 1;
+    public static void main(String[] args) {
+        System.out.println(guessNumber(2500, new String[]{"X+10", "X-5", "X*5", "X^2"}));  // Output: 5
+        System.out.println(guessNumber(1000, new String[]{"X*5", "X/0", "X^3"}));  // Output: -1
+        System.out.println(guessNumber(10, new String[]{"X*5", "X*0", "X+10"}));  // Output: -2
+        System.out.println(guessNumber(617283948, new String[]{"X+5", "X-0", "X+1", "X/2", "X^1"}));  // Output: 1234567890
+    }
+    
+    public static double guessNumber(int finalNumber, String[] operations) {
+        double X = finalNumber; // Assigning finalNumber to X
+        
+        
+        operations = Arrays.stream(operations).map(s -> s.replace("X", "")).toArray(String[]::new); // Removing X from the operations
+        for(int i=operations.length-1;i>=0;i--) {
+            if(operations[i].contains("+")) {
+                X = X - Double.parseDouble(operations[i].replace("+", "")); // Subtracting the value from X
+            } else if(operations[i].contains("-")) {
+                X = X + Double.parseDouble(operations[i].replace("-", "")); // Adding the value to X
+            } else if(operations[i].contains("*")) {
+                if(Double.parseDouble(operations[i].replace("*", "")) == 0) {
+                    return -2; // If the value is 0, return -1
+                }
+                X = X / Double.parseDouble(operations[i].replace("*", "")); // Dividing the value from X
+            } else if(operations[i].contains("/")) {
+                if(Double.parseDouble(operations[i].replace("/", "")) == 0) {
+                    return -1; // If the value is 0, return -1
+                }
+                X = X * Double.parseDouble(operations[i].replace("/", "")); // Multiplying the value to X
+            } else if(operations[i].contains("^")) {
+                X = Math.pow(X, (1/Double.parseDouble(operations[i].replace("^", "")))); // Power of X
+            }else {
+                return -1;
+            }
 
-    for (int i = 0; i < num_operations; i++) {
-        char operator;
-        int value;
-        sscanf(operations[i], "X %c %d", &operator, &value);
-
-        switch (operator) {
-            case '+':
-                candidate += value;
-                break;
-            case '-':
-                candidate -= value;
-                break;
-            case '*':
-                candidate *= value;
-                break;
-            case '/':
-                if (value == 0)
-                    return -1;
-                if (candidate % value != 0)
-                    return -2;
-                candidate /= value;
-                break;
-            case '^':
-                candidate = pow(candidate, value);
-                break;
-            case '%':
-                if (value == 0)
-                    return -1;
-                candidate %= value;
-                break;
         }
+           
+        return X; // Return the final calculated value
     }
-
-    if (candidate == final_number)
-        return candidate;
-    else
-        return -2;
-}
-
-int main() {
-    int final_number;
-    char operations[MAX_OPERATIONS][10];
-    int num_operations;
-
-    // Input final number
-    printf("Enter the final number: ");
-    scanf("%d", &final_number);
-
-    // Input operations
-    printf("Enter the number of operations: ");
-    scanf("%d", &num_operations);
-
-    printf("Enter the operations in the format 'X OPERATOR VALUE', separated by spaces:\n");
-    for (int i = 0; i < num_operations; i++) {
-        scanf("%s", operations[i]);
-    }
-
-    // Apply operations and find the original number
-    long long result = apply_operations(final_number, operations, num_operations);
-
-    // Output result
-    if (result == -1)
-        printf("Output: -1 (Invalid operation)\n");
-    else if (result == -2)
-        printf("Output: -2 (Multiple possible answers)\n");
-    else
-        printf("Output: %lld\n", result);
-
-    return 0;
 }
