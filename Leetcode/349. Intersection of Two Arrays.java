@@ -34,5 +34,6 @@ public class Solution {
 
         // Convert the ArrayList to an array and return
         return resultList.stream().mapToInt(Integer::intValue).toArray();
+        
     }
 }
