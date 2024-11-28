@@ -15,7 +15,7 @@ class Solution {
 
     public int minimumObstacles(int[][] grid) {
         int rows = grid.length, cols = grid[0].length;
-        int[][] dist = new int[rows][cols];
+        int[][] dist = new int[rows][cols] ;
         for (int[] d : dist) java.util.Arrays.fill(d, Integer.MAX_VALUE);
         dist[0][0] = 0;
 
