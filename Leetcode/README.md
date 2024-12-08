@@ -13,3 +13,7 @@ Start : 13th November 2024
 Ends : 12 November 2025
 
 MileStones - "Day one" - 30 days - 100 days - 6 months - 200 days - "One Day" <Goal Achieve> 
+
+consistency break at 7 Dec 24.
+
+Resatrt from 8 Dec 24.
